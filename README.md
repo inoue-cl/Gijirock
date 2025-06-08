@@ -18,6 +18,11 @@ Hugging Face API トークンは環境変数 `HF_TOKEN` または CLI 引数で�
 ```bash
 python src/ui/main_window.py
 ```
+また、どのディレクトリからでも次のようにモジュールとして実行できます:
+
+```bash
+python -m src.ui.main_window
+```
 
 ## 実行ファイル
 
