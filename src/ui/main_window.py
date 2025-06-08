@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import logging
+import sys
 from pathlib import Path
 from typing import Dict
 
@@ -24,8 +25,12 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 
-# Use absolute imports so the module can be executed directly with
-# `python src/ui/main_window.py` without package context.
+# Allow running this file directly from within the ``src/ui`` directory
+# by adding the repository root to ``sys.path`` at runtime.
+ROOT_DIR = Path(__file__).resolve().parents[2]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
 from src.core.diarize import Diarizer
 from src.core.splitter import SegmentSplitter
 from src.core.transcriber import Transcriber
