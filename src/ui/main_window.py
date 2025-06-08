@@ -24,10 +24,12 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 
-from ..core.diarize import Diarizer
-from ..core.splitter import SegmentSplitter
-from ..core.transcriber import Transcriber
-from ..core.merger import Merger
+# Use absolute imports so the module can be executed directly with
+# `python src/ui/main_window.py` without package context.
+from src.core.diarize import Diarizer
+from src.core.splitter import SegmentSplitter
+from src.core.transcriber import Transcriber
+from src.core.merger import Merger
 
 logger = logging.getLogger(__name__)
 
