@@ -1,0 +1,6 @@
+pyannote.audio
+git+https://github.com/openai/whisper.git
+pydub
+tqdm
+numpy
+PySide6>=6.5
