@@ -25,11 +25,10 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 
-# Allow running this file directly from within the ``src/ui`` directory
-# by adding the repository root to ``sys.path`` at runtime.
-ROOT_DIR = Path(__file__).resolve().parents[2]
-if str(ROOT_DIR) not in sys.path:
-    sys.path.insert(0, str(ROOT_DIR))
+# ``main_window.py`` is expected to be executed as a module from the
+# repository root (`python -m src.ui.main_window`).  When run this way
+# Python sets up the package import path automatically so no manual
+# modification of ``sys.path`` is required.
 
 from src.core.diarize import Diarizer
 from src.core.splitter import SegmentSplitter

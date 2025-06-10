@@ -30,13 +30,10 @@ Hugging Face API トークンは環境変数 `HF_TOKEN` または CLI 引数で�
 ## GUI 起動
 
 ```bash
-python src/ui/main_window.py
-```
-また、どのディレクトリからでも次のようにモジュールとして実行できます:
-
-```bash
 python -m src.ui.main_window
 ```
+*このモジュール形式で実行することで、パッケージのインポートパスが自動的に設定
+されます。*
 
 ## 実行ファイル
 
