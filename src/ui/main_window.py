@@ -30,6 +30,15 @@ from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 # Python sets up the package import path automatically so no manual
 # modification of ``sys.path`` is required.
 
+# Support execution both as ``python -m src.ui.main_window`` and as a script.
+if __package__ in (None, ""):  # pragma: no cover - CLI/GUI
+    # When run directly (e.g. ``python src/ui/main_window.py``), ``src``
+    # won't be on ``sys.path``.  Add the repository root so that the
+    # ``src`` package can be imported.
+    repo_root = Path(__file__).resolve().parents[2]
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
+
 from src.core.diarize import Diarizer
 from src.core.splitter import SegmentSplitter
 from src.core.transcriber import Transcriber
