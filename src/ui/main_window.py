@@ -7,23 +7,30 @@ import sys
 from pathlib import Path
 from typing import Dict
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
-    QApplication,
-    QHBoxLayout,
-    QHeaderView,
-    QLabel,
-    QLineEdit,
-    QMainWindow,
-    QMessageBox,
-    QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-    QFileDialog,
-)
-from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+try:  # pragma: no cover - import check
+    from PySide6.QtCore import Qt
+    from PySide6.QtWidgets import (
+        QApplication,
+        QHBoxLayout,
+        QHeaderView,
+        QLabel,
+        QLineEdit,
+        QMainWindow,
+        QMessageBox,
+        QPushButton,
+        QTableWidget,
+        QTableWidgetItem,
+        QVBoxLayout,
+        QWidget,
+        QFileDialog,
+    )
+    from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+except ModuleNotFoundError as exc:  # pragma: no cover - CLI/GUI
+    raise ModuleNotFoundError(
+        "PySide6 がインストールされていません。"
+        " `pip install -r requirements.txt` を実行して依存パッケージを"
+        " インストールしてください。"
+    ) from exc
 
 # ``main_window.py`` is expected to be executed as a module from the
 # repository root (`python -m src.ui.main_window`).  When run this way
