@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Iterable
 
 from pydub import AudioSegment
+from .utils import convert_to_wav
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +17,9 @@ class SegmentSplitter:
     def run(self, audio_path: Path, diar_json: Path, output_dir: Path) -> Iterable[Path]:
         logger.info("Splitting %s into segments", audio_path)
         segments = json.loads(diar_json.read_text())
-        audio = AudioSegment.from_file(audio_path)
+        path_to_use = convert_to_wav(audio_path)
+        audio = AudioSegment.from_file(path_to_use)
+        cleanup = path_to_use != audio_path
         output_dir.mkdir(parents=True, exist_ok=True)
         paths = []
         for i, seg in enumerate(segments):
@@ -27,4 +30,6 @@ class SegmentSplitter:
             piece.export(out_path, format="wav")
             paths.append(out_path)
         logger.info("Saved %d segments to %s", len(paths), output_dir)
+        if cleanup:
+            Path(path_to_use).unlink(missing_ok=True)
         return paths
