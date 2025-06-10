@@ -11,6 +11,7 @@ python3 -m venv venv
 venv\Scripts\activate   # PowerShell/CMD の場合
 # (macOS/Linux の場合は source venv/bin/activate)
 pip install -r requirements.txt
+# diarization model requires pyannote.audio 2.x
 ```
 
 `sentencepiece` のビルドに失敗する場合は `pip install --upgrade pip` を実行し、
