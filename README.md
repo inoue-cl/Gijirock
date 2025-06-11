@@ -4,15 +4,16 @@
 
 ## セットアップ
 
-Python 3.10での利用を推奨します。pyannote.audio 2.x は torchaudio <1.0 に依存し、Python 3.11 以降には対応していません。
+このプロジェクトは **Python 3.10** での利用が必須です。`pyannote.audio` 2.x は `torchaudio<1.0` に依存しているため、Python 3.11 以降ではインストールに失敗します。`pyenv` などを使って 3.10 系の Python を準備してください。
+
 ```bash
-# Python 3 を python3 として呼び出す環境では以下を使用
-python3 -m venv venv
-# Windows など ``python`` コマンドが Python 3 を指す場合は ``python`` でも構いません
-venv\Scripts\activate   # PowerShell/CMD の場合
-# (macOS/Linux の場合は source venv/bin/activate)
+# 例: pyenv を利用した環境構築
+pyenv install 3.10.12      # 未インストールの場合
+pyenv local 3.10.12
+python -m venv venv
+# Windows の場合 ``venv\Scripts\activate``
+source venv/bin/activate
 pip install -r requirements.txt
-# diarization model requires pyannote.audio 2.x
 ```
 
 `sentencepiece` のビルドに失敗する場合は `pip install --upgrade pip` を実行し、
