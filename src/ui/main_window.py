@@ -6,6 +6,7 @@ import logging
 import sys
 from pathlib import Path
 from typing import Dict
+from dotenv import load_dotenv, set_key
 
 try:  # pragma: no cover - import check
     from PySide6.QtCore import Qt
@@ -17,6 +18,7 @@ try:  # pragma: no cover - import check
         QLineEdit,
         QMainWindow,
         QMessageBox,
+        QInputDialog,
         QPushButton,
         QTableWidget,
         QTableWidgetItem,
@@ -45,6 +47,9 @@ if __package__ in (None, ""):  # pragma: no cover - CLI/GUI
     repo_root = Path(__file__).resolve().parents[2]
     if str(repo_root) not in sys.path:
         sys.path.insert(0, str(repo_root))
+
+load_dotenv()
+ENV_PATH = Path(".env")
 
 from src.core.diarize import Diarizer
 from src.core.splitter import SegmentSplitter
@@ -87,6 +92,17 @@ class MainWindow(QMainWindow):
         self.diar_json: Path | None = None
         self.trans_json: Path | None = None
 
+    def _ensure_token(self) -> str:
+        token = os.environ.get("HF_TOKEN")
+        if token:
+            return token
+        token, ok = QInputDialog.getText(self, "HF_TOKEN", "Enter Hugging Face token:")
+        if not ok or not token:
+            raise RuntimeError("HF_TOKEN is required")
+        os.environ["HF_TOKEN"] = token
+        set_key(str(ENV_PATH), "HF_TOKEN", token)
+        return token
+
     def open_audio(self) -> None:
         file_dialog = QFileDialog(self)
         file_dialog.setNameFilters(["Audio Files (*.wav *.mp3 *.m4a)"])
@@ -101,7 +117,7 @@ class MainWindow(QMainWindow):
     def process(self, audio_path: Path) -> None:
         output = Path("output")
         output.mkdir(exist_ok=True)
-        diarizer = Diarizer(token=os.environ.get("HF_TOKEN", ""))
+        diarizer = Diarizer(token=self._ensure_token())
         self.diar_json = output / "diarization.json"
         diarizer.run(audio_path, self.diar_json)
 

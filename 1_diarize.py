@@ -3,8 +3,11 @@ from pathlib import Path
 import argparse
 import os
 import logging
+from dotenv import load_dotenv
 
 from src.core.diarize import Diarizer
+
+load_dotenv()
 
 logging.basicConfig(level=logging.INFO)
 

@@ -2,8 +2,16 @@ from __future__ import annotations
 
 from pathlib import Path
 from tempfile import NamedTemporaryFile
-
+import sys
 from pydub import AudioSegment
+
+_FFMPEG_CANDIDATE = (
+    Path(__file__).resolve().parents[2]
+    / "ffmpeg"
+    / ("ffmpeg.exe" if sys.platform == "win32" else "ffmpeg")
+)
+if _FFMPEG_CANDIDATE.exists():
+    AudioSegment.converter = str(_FFMPEG_CANDIDATE)
 
 
 def convert_to_wav(audio_path: Path) -> Path:
