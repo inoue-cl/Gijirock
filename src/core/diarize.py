@@ -33,20 +33,19 @@ class Diarizer:
         token = os.environ["HF_TOKEN"]
 
         # ローカル推論用 Pipeline インスタンスの作成
-        diag_pipeline = Pipeline.from_pretrained(
+        pipeline = Pipeline.from_pretrained(
             "pyannote/speaker-diarization",
-            use_auth_token=token
+            use_auth_token=token,
         )
 
         # 音声ファイルを入力して推論実行
-        diag_result = diag_pipeline(str(path_to_use))
+        diar = pipeline(str(path_to_use))
 
         if tmp_path is not None:
             tmp_path.unlink(missing_ok=True)
 
         # JSON形式で出力
-        authored_json = diag_result.to_json()
         with open(output_json, "w") as f:
-            f.write(authored_json)
+            f.write(diar.to_json())
         logger.info("Diarization saved to %s", output_json)
         return output_json
