@@ -51,10 +51,10 @@ Windows では `build_scripts/build_win_exe.sh` を実行して単一の EXE を
 python 1_diarize.py -i audio\sample.wav -o output\diarization.json
 python 2_split_segments.py -i audio\sample.wav -d output\diarization.json -o segments
 python 3_transcribe.py -i segments -o output\transcriptions.json
-python 4_merge_results.py -d output\diarization.json -t output\transcriptions.json -o output\final.txt
+python 4_merge_results.py -d output\diarization.json -t output\transcriptions.json -o output\final.json
 ```
 
-最後に `output\final.txt` に話者ラベル付きの文字起こし結果が生成されます。
+最後に `output\final.json` もしくは拡張子を `.csv` にしたファイルに、話者ラベル付きの文字起こし結果が生成されます。
 
 ## サンプル音声
 
