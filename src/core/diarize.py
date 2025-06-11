@@ -5,7 +5,9 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-import requests
+import os
+from pyannote.audio import Pipeline
+
 from .utils import convert_to_wav
 
 logger = logging.getLogger(__name__)
@@ -27,24 +29,24 @@ class Diarizer:
             if path_to_use != audio_path:
                 tmp_path = path_to_use
 
-        with open(path_to_use, "rb") as f:
-            response = requests.post(
-                "https://api-inference.huggingface.co/models/pyannote/speaker-diarization@2023.07",
-                headers={"Authorization": f"Bearer {self.token}"},
-                data=f,
-            )
-        response.raise_for_status()
+        # 環境変数からトークンを取得
+        token = os.environ["HF_TOKEN"]
+
+        # ローカル推論用 Pipeline インスタンスの作成
+        diag_pipeline = Pipeline.from_pretrained(
+            "pyannote/speaker-diarization",
+            use_auth_token=token
+        )
+
+        # 音声ファイルを入力して推論実行
+        diag_result = diag_pipeline(str(path_to_use))
+
         if tmp_path is not None:
             tmp_path.unlink(missing_ok=True)
-        data = response.json()
-        segments = [
-            {
-                "start": seg.get("start"),
-                "end": seg.get("end"),
-                "speaker": seg.get("label", ""),
-            }
-            for seg in data.get("segments", data)
-        ]
-        output_json.write_text(json.dumps(segments, indent=2))
+
+        # JSON形式で出力
+        authored_json = diag_result.to_json()
+        with open(output_json, "w") as f:
+            f.write(authored_json)
         logger.info("Diarization saved to %s", output_json)
         return output_json
