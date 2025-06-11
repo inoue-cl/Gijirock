@@ -4,6 +4,7 @@
 
 ## セットアップ
 
+Python 3.10での利用を推奨します。pyannote.audio 2.x は torchaudio <1.0 に依存し、Python 3.11 以降には対応していません。
 ```bash
 # Python 3 を python3 として呼び出す環境では以下を使用
 python3 -m venv venv
