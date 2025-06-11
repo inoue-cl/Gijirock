@@ -14,6 +14,21 @@ python -m venv venv
 # Windows の場合 ``venv\Scripts\activate``
 source venv/bin/activate
 pip install -r requirements.txt
+
+### macOS (Apple Silicon) での hmmlearn インストール
+
+Apple Silicon 環境では `hmmlearn` 0.2 系のビルドが失敗することがあります。
+その場合は下記のように Universal2 wheel が公開されている
+`hmmlearn==0.3.0` を先にインストールし、その後で残りの依存関係を
+`--no-deps` オプション付きで入れてください。
+
+```bash
+pip install --no-deps hmmlearn==0.3.0
+pip install -r requirements.txt --no-deps
+```
+
+`pyannote.audio` 2.1.1 は `hmmlearn<0.3` を要求しますが、通常は 0.3.0 でも問題なく
+動作します。
 ```
 
 `sentencepiece` のビルドに失敗する場合は `pip install --upgrade pip` を実行し、
