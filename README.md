@@ -48,7 +48,7 @@ Windows では `build_scripts/build_win_exe.sh` を実行して単一の EXE を
 3. 音声ファイルを `audio/` フォルダーに置き、以下のコマンドを順に実行します。
 
 ```cmd
-python 1_diarize.py -i audio\sample.wav -o output\diarization.json
+python 1_diarize.py -i audio\sample.wav -o output\diarization.json --model pyannote/speaker-diarization@2023.07 --use-gpu
 python 2_split_segments.py -i audio\sample.wav -d output\diarization.json -o segments
 python 3_transcribe.py -i segments -o output\transcriptions.json
 python 4_merge_results.py -d output\diarization.json -t output\transcriptions.json -o output\final.json
