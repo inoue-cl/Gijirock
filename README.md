@@ -29,7 +29,6 @@ pip install -r requirements.txt --no-deps
 
 `pyannote.audio` 2.1.1 は `hmmlearn<0.3` を要求しますが、通常は 0.3.0 でも問題なく
 動作します。
-```
 
 `sentencepiece` のビルドに失敗する場合は `pip install --upgrade pip` を実行し、
 続けて以下を個別にインストールしてください。
