@@ -5,14 +5,14 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from pyannote.audio import Pipeline
+import requests
 from .utils import convert_to_wav
 
 logger = logging.getLogger(__name__)
 
 
 class Diarizer:
-    """Run speaker diarization using pyannote.audio."""
+    """Run speaker diarization using the Hugging Face API."""
 
     def __init__(self, token: str) -> None:
         self.token = token
@@ -27,19 +27,23 @@ class Diarizer:
             if path_to_use != audio_path:
                 tmp_path = path_to_use
 
-        pipeline = Pipeline.from_pretrained(
-            "pyannote/speaker-diarization@2.1", use_auth_token=self.token
-        )
-        diarization = pipeline(path_to_use)
+        with open(path_to_use, "rb") as f:
+            response = requests.post(
+                "https://api-inference.huggingface.co/models/pyannote/speaker-diarization",
+                headers={"Authorization": f"Bearer {self.token}"},
+                data=f,
+            )
+        response.raise_for_status()
         if tmp_path is not None:
             tmp_path.unlink(missing_ok=True)
+        data = response.json()
         segments = [
             {
-                "start": s.start,
-                "end": s.end,
-                "speaker": s.track,
+                "start": seg.get("start"),
+                "end": seg.get("end"),
+                "speaker": seg.get("label", ""),
             }
-            for s in diarization.itertracks(yield_label=True)
+            for seg in data.get("segments", data)
         ]
         output_json.write_text(json.dumps(segments, indent=2))
         logger.info("Diarization saved to %s", output_json)

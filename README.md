@@ -1,62 +1,23 @@
 # Gijirock
 
-議事録ツールです。音声ファイルから話者分離、文字起こしを行い、GUI 上でスピーカー名を編集して最終的な議事録 (TXT) を生成します。
+議事録ツールです。音声ファイルから話者分離、文字起こしを行い、GUI 上でスピーカー名を編集して最終的な議事録 (TXT) を生成します。話者分離は Hugging Face の Inference API を利用するため、ローカルで重い依存ライブラリをビルドする必要がありません。
 
 ## セットアップ
 
-このプロジェクトは **Python 3.10** での利用が必須です。`pyannote.audio` 2.x は `torchaudio<1.0` に依存しているため、Python 3.11 以降ではインストールに失敗します。`pyenv` などを使って 3.10 系の Python を準備してください。
+このプロジェクトは **Python 3.10 以上** の環境で動作します。仮想環境を作成し、依存
+パッケージをインストールしてください。
 
 ```bash
-# 例: pyenv を利用した環境構築
-pyenv install 3.10.12      # 未インストールの場合
-pyenv local 3.10.12
 python -m venv venv
 # Windows の場合 ``venv\Scripts\activate``
 source venv/bin/activate
 pip install -r requirements.txt
-
-### macOS (Apple Silicon) での hmmlearn インストール
-
-Apple Silicon 環境では `hmmlearn` 0.2 系のビルドが失敗することがあります。
-その場合は下記のように Universal2 wheel が公開されている
-`hmmlearn==0.3.0` を先にインストールし、その後で残りの依存関係を
-`--no-deps` オプション付きで入れてください。
-
-```bash
-pip install --no-deps hmmlearn==0.3.0
-pip install -r requirements.txt --no-deps
 ```
 
-`pyannote.audio` 2.1.1 は `hmmlearn<0.3` を要求しますが、通常は 0.3.0 でも問題なく
-動作します。
-```
-
-`sentencepiece` のビルドに失敗する場合は `pip install --upgrade pip` を実行し、
-続けて以下を個別にインストールしてください。
+Docker を利用する場合は、同梱の `Dockerfile` からイメージをビルドできます。
 
 ```bash
-pip install --prefer-binary sentencepiece==0.2.0
-```
-
-### Apple Silicon でのビルド失敗時の対処
-
-`hmmlearn` のビルドに失敗する場合は以下の方法を検討してください。
-
-1. **Rosetta (x86_64) モードでの構築** – `arch -x86_64 zsh` でターミナルを開き、`pyenv` で x86_64 用 Python を入れ直します。
-2. **Docker 環境の利用** – OS に依存しない再現性の高い環境を用意できます。
-3. **Intel Mac / Ubuntu など別環境での作業** – Apple Silicon 固有の問題を回避できます。
-4. **Wheel ファイルの手動インストール** – 一時的な手段ですが将来的に破綻しやすいため注意が必要です。
-
-#### Rosetta 使用例
-
-```bash
-arch -x86_64 zsh
-pyenv install 3.10.13
-pyenv local 3.10.13
-python -m venv venv
-source venv/bin/activate
-pip install --upgrade pip wheel setuptools
-pip install -r requirements.txt
+docker build -t gijirock .
 ```
 
 音声処理には `ffmpeg` が必要です。Windows では
