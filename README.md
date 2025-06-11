@@ -38,6 +38,27 @@ pip install -r requirements.txt --no-deps
 pip install --prefer-binary sentencepiece==0.2.0
 ```
 
+### Apple Silicon でのビルド失敗時の対処
+
+`hmmlearn` のビルドに失敗する場合は以下の方法を検討してください。
+
+1. **Rosetta (x86_64) モードでの構築** – `arch -x86_64 zsh` でターミナルを開き、`pyenv` で x86_64 用 Python を入れ直します。
+2. **Docker 環境の利用** – OS に依存しない再現性の高い環境を用意できます。
+3. **Intel Mac / Ubuntu など別環境での作業** – Apple Silicon 固有の問題を回避できます。
+4. **Wheel ファイルの手動インストール** – 一時的な手段ですが将来的に破綻しやすいため注意が必要です。
+
+#### Rosetta 使用例
+
+```bash
+arch -x86_64 zsh
+pyenv install 3.10.13
+pyenv local 3.10.13
+python -m venv venv
+source venv/bin/activate
+pip install --upgrade pip wheel setuptools
+pip install -r requirements.txt
+```
+
 音声処理には `ffmpeg` が必要です。Windows では
 [FFmpeg](https://ffmpeg.org/download.html) の実行ファイルを入手して
 `ffmpeg.exe` へのパスを環境変数に通してください。
@@ -77,6 +98,11 @@ python 4_merge_results.py -d output\diarization.json -t output\transcriptions.js
 ## サンプル音声
 
 `speech_diarizer_qt/audio/sample.wav` は含まれていません。30 秒の二人話者の音声を各自用意してください。
+
+## 今後のために
+
+* ビルドが必要なライブラリは Apple Silicon での動作実績を事前に確認しておくと安心です。
+* Dockerfile や devcontainer を整備しておくと CI でも同じ環境を再現できます。
 
 ## ライセンス
 
