@@ -29,8 +29,8 @@ class Diarizer:
             if path_to_use != audio_path:
                 tmp_path = path_to_use
 
-        # 環境変数からトークンを取得
-        token = os.environ["HF_TOKEN"]
+        # 環境変数または引数からトークンを取得
+        token = self.token or os.environ["HF_TOKEN"]
 
         # ローカル推論用 Pipeline インスタンスの作成
         pipeline = Pipeline.from_pretrained(

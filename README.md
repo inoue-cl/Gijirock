@@ -25,7 +25,8 @@ docker build -t gijirock .
 `ffmpeg.exe` へのパスを環境変数に通してください。
 `m4a` や `mp3` を読み込んだ場合は内部で WAV へ変換して処理するため、
 `ffmpeg` が正しくインストールされている必要があります。
-Hugging Face API トークンは環境変数 `HF_TOKEN` または CLI 引数で指定します。
+Hugging Face API トークンは `.env` ファイルに `HF_TOKEN=...` を記述するか、
+環境変数 `HF_TOKEN` で指定してください。
 
 ## GUI 起動
 
@@ -37,14 +38,15 @@ python -m src.ui.main_window
 
 ## 実行ファイル
 
-Windows では `build_scripts/build_win_exe.sh` を実行して単一の EXE を生成できます。
+`python build.py` を実行すると、Windows では単一の EXE、その他の OS では
+`dist/` 以下に必要ファイルがコピーされた配布用ディレクトリが生成されます。
 
 ## CMD からの実行例
 
 初心者向けに、コマンドプロンプトでの一連の流れをまとめます。
 
 1. リポジトリを取得して上記のセットアップを実施します。
-2. `set HF_TOKEN=YOUR_TOKEN` でトークンを設定します（必要に応じて）。
+2. `.env` に `HF_TOKEN=YOUR_TOKEN` を記載するか、`set HF_TOKEN=YOUR_TOKEN` で環境変数を設定します。
 3. 音声ファイルを `audio/` フォルダーに置き、以下のコマンドを順に実行します。
 
 ```cmd
