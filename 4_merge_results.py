@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description="Merge diarization and transcripts"
 parser.add_argument("-d", "--diar", required=True, help="Diarization JSON")
 parser.add_argument("-t", "--trans", required=True, help="Transcription JSON")
 parser.add_argument("-m", "--map", required=False, help="Mapping YAML (unused)")
-parser.add_argument("-o", "--output", required=True, help="Output TXT")
+parser.add_argument("-o", "--output", required=True, help="Output file (.json or .csv)")
 
 args = parser.parse_args()
 

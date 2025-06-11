@@ -29,7 +29,7 @@ class Diarizer:
 
         with open(path_to_use, "rb") as f:
             response = requests.post(
-                "https://api-inference.huggingface.co/models/pyannote/speaker-diarization",
+                "https://api-inference.huggingface.co/models/pyannote/speaker-diarization@2023.07",
                 headers={"Authorization": f"Bearer {self.token}"},
                 data=f,
             )
