@@ -4,8 +4,7 @@
 
 ## セットアップ
 
-このプロジェクトは **Python 3.10 以上** の環境で動作します。仮想環境を作成し、依存
-パッケージをインストールしてください。
+このプロジェクトは **Python 3.10 以上** の環境で動作します。仮想環境を作成し、依存パッケージをインストールしてください。
 
 ```bash
 python -m venv venv
@@ -19,6 +18,16 @@ Docker を利用する場合は、同梱の `Dockerfile` からイメージを�
 ```bash
 docker build -t gijirock .
 ```
+
+### Apple Silicon / Linux での実行例
+
+macOS(M1/M2) でも特別な設定は不要です。`ffmpeg` を Homebrew などでインストールするか、
+次のように Docker 環境を使って実行できます。
+
+```bash
+docker run -it -v $(pwd):/app gijirock
+```
+Rosetta を利用する必要はありません。
 
 音声処理には `ffmpeg` が必要です。Windows では
 [FFmpeg](https://ffmpeg.org/download.html) の実行ファイルを入手して
