@@ -28,7 +28,7 @@ class Diarizer:
                 tmp_path = path_to_use
 
         pipeline = Pipeline.from_pretrained(
-            "pyannote/speaker-diarization@2.1", use_auth_token=self.token
+            "pyannote/speaker-diarization-3.1", use_auth_token=self.token
         )
         diarization = pipeline(path_to_use)
         if tmp_path is not None:
