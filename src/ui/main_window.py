@@ -7,28 +7,44 @@ import sys
 from pathlib import Path
 from typing import Dict
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
-    QApplication,
-    QHBoxLayout,
-    QHeaderView,
-    QLabel,
-    QLineEdit,
-    QMainWindow,
-    QMessageBox,
-    QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-    QFileDialog,
-)
-from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+try:  # pragma: no cover - import check
+    from PySide6.QtCore import Qt
+    from PySide6.QtWidgets import (
+        QApplication,
+        QHBoxLayout,
+        QHeaderView,
+        QLabel,
+        QLineEdit,
+        QMainWindow,
+        QMessageBox,
+        QPushButton,
+        QTableWidget,
+        QTableWidgetItem,
+        QVBoxLayout,
+        QWidget,
+        QFileDialog,
+    )
+    from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
+except ModuleNotFoundError as exc:  # pragma: no cover - CLI/GUI
+    raise ModuleNotFoundError(
+        "PySide6 がインストールされていません。"
+        " `pip install -r requirements.txt` を実行して依存パッケージを"
+        " インストールしてください。"
+    ) from exc
 
 # ``main_window.py`` is expected to be executed as a module from the
 # repository root (`python -m src.ui.main_window`).  When run this way
 # Python sets up the package import path automatically so no manual
 # modification of ``sys.path`` is required.
+
+# Support execution both as ``python -m src.ui.main_window`` and as a script.
+if __package__ in (None, ""):  # pragma: no cover - CLI/GUI
+    # When run directly (e.g. ``python src/ui/main_window.py``), ``src``
+    # won't be on ``sys.path``.  Add the repository root so that the
+    # ``src`` package can be imported.
+    repo_root = Path(__file__).resolve().parents[2]
+    if str(repo_root) not in sys.path:
+        sys.path.insert(0, str(repo_root))
 
 from src.core.diarize import Diarizer
 from src.core.splitter import SegmentSplitter

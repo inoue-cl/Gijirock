@@ -1,7 +1,10 @@
-pyannote.audio
+pyannote.audio==2.1.1
+torch==1.13.1
+torchaudio==0.13.1
 git+https://github.com/openai/whisper.git
 pydub
 tqdm
 numpy
 PySide6>=6.5
 sentencepiece==0.2.0
+hmmlearn==0.2.8

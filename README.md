@@ -4,13 +4,31 @@
 
 ## セットアップ
 
+このプロジェクトは **Python 3.10** での利用が必須です。`pyannote.audio` 2.x は `torchaudio<1.0` に依存しているため、Python 3.11 以降ではインストールに失敗します。`pyenv` などを使って 3.10 系の Python を準備してください。
+
 ```bash
-# Python 3 を python3 として呼び出す環境では以下を使用
-python3 -m venv venv
-# Windows など ``python`` コマンドが Python 3 を指す場合は ``python`` でも構いません
-venv\Scripts\activate   # PowerShell/CMD の場合
-# (macOS/Linux の場合は source venv/bin/activate)
+# 例: pyenv を利用した環境構築
+pyenv install 3.10.12      # 未インストールの場合
+pyenv local 3.10.12
+python -m venv venv
+# Windows の場合 ``venv\Scripts\activate``
+source venv/bin/activate
 pip install -r requirements.txt
+
+### macOS (Apple Silicon) での hmmlearn インストール
+
+Apple Silicon 環境では `hmmlearn` 0.2 系のビルドが失敗することがあります。
+その場合は下記のように Universal2 wheel が公開されている
+`hmmlearn==0.3.0` を先にインストールし、その後で残りの依存関係を
+`--no-deps` オプション付きで入れてください。
+
+```bash
+pip install --no-deps hmmlearn==0.3.0
+pip install -r requirements.txt --no-deps
+```
+
+`pyannote.audio` 2.1.1 は `hmmlearn<0.3` を要求しますが、通常は 0.3.0 でも問題なく
+動作します。
 ```
 
 `sentencepiece` のビルドに失敗する場合は `pip install --upgrade pip` を実行し、
